@@ -40,7 +40,14 @@ class LoginController
 
             // Revisar que alertas esté vacío
             if (empty($alertas)) {
-                echo "No hay alertas";
+                // Verificar que el usuario no esté registrado
+                $resultado = $usuario->existeUsuario();
+
+                if ($resultado->num_rows) {
+                    $alertas = Usuario::getAlertas();
+                } else {
+                    // No está registrado
+                }
             }
         }
 
