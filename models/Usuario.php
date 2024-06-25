@@ -65,7 +65,6 @@ class Usuario extends ActiveRecord
     public function existeUsuario()
     {
         $query = " SELECT * FROM " . self::$tabla . " WHERE email = '" . $this->email . "' LIMIT 1 ";
-        debug($query);
 
         $resultado = self::$db->query($query);
 
@@ -74,5 +73,15 @@ class Usuario extends ActiveRecord
         }
 
         return $resultado;
+    }
+
+    public function hashPassword()
+    {
+        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+    }
+
+    public function crearToken()
+    {
+        $this->token = uniqid();
     }
 }
