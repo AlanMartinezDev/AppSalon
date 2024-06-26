@@ -85,6 +85,7 @@ CREATE TABLE `usuarios` (
   `nombre` varchar(60) DEFAULT NULL,
   `apellido` varchar(60) DEFAULT NULL,
   `email` varchar(30) DEFAULT NULL,
+  `password` varchar(60) DEFAULT NULL,
   `telefono` varchar(9) DEFAULT NULL,
   `admin` tinyint(1) DEFAULT NULL,
   `confirmado` tinyint(1) DEFAULT NULL,
