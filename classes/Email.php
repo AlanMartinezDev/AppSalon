@@ -6,14 +6,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Email
 {
-    public $email;
     public $nombre;
+    public $email;
     public $token;
 
-    public function __construct($email, $nombre, $token)
+    public function __construct($nombre, $email, $token)
     {
-        $this->email = $email;
         $this->nombre = $nombre;
+        $this->email = $email;
         $this->token = $token;
     }
 
@@ -37,11 +37,13 @@ class Email
         $mail->CharSet = 'UTF-8';
 
         $contenido = "<html>";
-        $contenido .= "<p><strong>Hola " . $this->nombre .  "</strong> has creado tu cuenta en AppSalon, solo debes confirmarla presionando el siguiente enlace</p>";
+        $contenido .= "<p>Hola <strong>" . $this->nombre .  "</strong> has creado tu cuenta en AppSalon, solo debes confirmarla presionando el siguiente enlace</p>";
         $contenido .= "<p>Presiona aquí: <a href='http://localhost:4321/confirmar-cuenta?token=" . $this->token . "'>Confirmar cuenta</a></p>";
         $contenido .= "<p>Si tu no solicitaste esta cuenta, ignora el mensaje</p>";
         $contenido .= "</html>";
-
         $mail->Body = $contenido;
+
+        // Enviar el mail
+        $mail->send();
     }
 }
