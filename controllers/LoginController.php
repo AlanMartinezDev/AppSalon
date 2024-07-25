@@ -112,7 +112,7 @@ class LoginController
             $password = new Usuario($_POST);
             $alertas = $password->validarPassword();
 
-            if (empty($errores)) {
+            if (empty($alertas)) {
                 $usuario->password = null;
 
                 $usuario->password = $password->password;
