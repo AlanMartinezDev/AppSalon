@@ -23,7 +23,8 @@ function iniciarApp() {
     consultarAPI(); // Consulta la API en el backend de PHP
 
     nombreCliente(); // Añade el nombre del cliente al objeto de cita
-    seleccionarFecha(); // Añade la fehca de la cita en el objeto
+    seleccionarFecha(); // Añade la fecha de la cita en el objeto
+    seleccionarHora(); // Añade la hora de la cita en el objeto
 }
 
 function mostrarSeccion() {
@@ -162,8 +163,36 @@ function seleccionarFecha() {
         const dia = new Date(e.target.value).getUTCDay();
         if ([6, 0].includes(dia)) {
             e.target.value = '';
+            mostrarAlerta('Sábado y domingo abrimos', 'error');
         } else {
             cita.fecha = e.target.value;
         }
     })
+}
+
+function seleccionarHora() {
+    const inputHora = document.querySelector('#hora');
+    inputHora.addEventListener('input', function (e) {
+        console.log(e.target.value);
+    })
+}
+
+function mostrarAlerta(mensaje, tipo) {
+    // Previene que se generen más de 1 alerta
+    const alertaPrevia = document.querySelector('.alerta');
+    if (alertaPrevia) return;
+
+    // Scripting para crear alerta
+    const alerta = document.createElement('DIV');
+    alerta.textContent = mensaje;
+    alerta.classList.add('alerta');
+    alerta.classList.add(tipo);
+
+    const formulario = document.querySelector('.formulario');
+    formulario.appendChild(alerta);
+
+    // Eliminar la alerta
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
 }
