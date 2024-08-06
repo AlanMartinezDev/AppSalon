@@ -21,6 +21,9 @@ function iniciarApp() {
     paginaSiguiente();
 
     consultarAPI(); // Consulta la API en el backend de PHP
+
+    nombreCliente(); // Añade el nombre del cliente al objeto de cita
+    seleccionarFecha(); // Añade la fehca de la cita en el objeto
 }
 
 function mostrarSeccion() {
@@ -147,4 +150,20 @@ function seleccionarServicio(servicio) {
         cita.servicios = [...servicios, servicio];
         divServicio.classList.add('seleccionado');
     }
+}
+
+function nombreCliente() {
+    cita.nombre = document.querySelector('#nombre').value;
+}
+
+function seleccionarFecha() {
+    const inputFecha = document.querySelector('#fecha');
+    inputFecha.addEventListener('input', function (e) {
+        const dia = new Date(e.target.value).getUTCDay();
+        if ([6, 0].includes(dia)) {
+            e.target.value = '';
+        } else {
+            cita.fecha = e.target.value;
+        }
+    })
 }
