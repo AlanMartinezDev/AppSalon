@@ -25,6 +25,8 @@ function iniciarApp() {
     nombreCliente(); // Añade el nombre del cliente al objeto de cita
     seleccionarFecha(); // Añade la fecha de la cita en el objeto
     seleccionarHora(); // Añade la hora de la cita en el objeto
+
+    mostrarResumen(); // Muestra el resumen de la cita
 }
 
 function mostrarSeccion() {
@@ -71,6 +73,7 @@ function botonesPaginador() {
     } else if (paso === 3) {
         paginaAnterior.classList.remove('ocultar');
         paginaSiguiente.classList.add('ocultar');
+        mostrarResumen();
     } else {
         paginaAnterior.classList.remove('ocultar');
         paginaSiguiente.classList.remove('ocultar');
@@ -163,7 +166,7 @@ function seleccionarFecha() {
         const dia = new Date(e.target.value).getUTCDay();
         if ([6, 0].includes(dia)) {
             e.target.value = '';
-            mostrarAlerta('Sábado y domingo abrimos', 'error');
+            mostrarAlerta('Sábado y domingo no abrimos', 'error', '.formulario');
         } else {
             cita.fecha = e.target.value;
         }
@@ -173,14 +176,23 @@ function seleccionarFecha() {
 function seleccionarHora() {
     const inputHora = document.querySelector('#hora');
     inputHora.addEventListener('input', function (e) {
-        console.log(e.target.value);
+        const horaCita = e.target.value;
+        const hora = horaCita.split(":")[0];
+        if (hora < 10 || hora > 18) {
+            e.target.value = '';
+            mostrarAlerta('Horario de 10:00 a 18:00', 'error', '.formulario');
+        } else {
+            cita.hora = e.target.value;
+        }
     })
 }
 
-function mostrarAlerta(mensaje, tipo) {
+function mostrarAlerta(mensaje, tipo, elemento, desaparece = true) {
     // Previene que se generen más de 1 alerta
     const alertaPrevia = document.querySelector('.alerta');
-    if (alertaPrevia) return;
+    if (alertaPrevia) {
+        alertaPrevia.remove();
+    };
 
     // Scripting para crear alerta
     const alerta = document.createElement('DIV');
@@ -188,11 +200,71 @@ function mostrarAlerta(mensaje, tipo) {
     alerta.classList.add('alerta');
     alerta.classList.add(tipo);
 
-    const formulario = document.querySelector('.formulario');
-    formulario.appendChild(alerta);
+    const referencia = document.querySelector(elemento);
+    referencia.appendChild(alerta);
 
-    // Eliminar la alerta
-    setTimeout(() => {
-        alerta.remove();
-    }, 3000);
+    if (desaparece) {
+        // Eliminar la alerta
+        setTimeout(() => {
+            alerta.remove();
+        }, 3000);
+    }
+}
+
+function mostrarResumen() {
+    const resumen = document.querySelector('.contenido-resumen');
+
+    // Limpiar el contentido de resumen
+    while (resumen.firstChild) {
+        resumen.removeChild(resumen.firstChild);
+    }
+
+    if (Object.values(cita).includes('') || cita.servicios.length === 0) {
+        mostrarAlerta('Hacen falta servicios o datos', 'error', '.contenido-resumen', false);
+        return;
+    }
+
+    // Formatear el div de resumen
+    const { nombre, fecha, hora, servicios } = cita;
+
+    // Heading para servicios en resumen
+    const headingServicios = document.createElement('H3');
+    headingServicios.textContent = 'Resumen de servicios';
+    resumen.appendChild(headingServicios);
+
+    // Iterando y mostrando los servicios
+    servicios.forEach(servicio => {
+        const { id, precio, nombre } = servicio;
+        const contenedorServicio = document.createElement('DIV');
+        contenedorServicio.classList.add('contenedor-servicio');
+
+        const textoServicio = document.createElement('P');
+        textoServicio.textContent = nombre;
+
+        const precioServicio = document.createElement('P');
+        precioServicio.innerHTML = `<span>Precio:</span> ${precio} €`;
+
+        contenedorServicio.appendChild(textoServicio);
+        contenedorServicio.appendChild(precioServicio);
+
+        resumen.appendChild(contenedorServicio);
+    });
+
+    // Heading para cita en resumen
+    const headingCita = document.createElement('H3');
+    headingCita.textContent = 'Resumen de cita';
+    resumen.appendChild(headingCita);
+
+    const nombreCliente = document.createElement('P');
+    nombreCliente.innerHTML = `<span>Nombre:</span> ${nombre}`;
+
+    const fechaCita = document.createElement('P');
+    fechaCita.innerHTML = `<span>Fecha:</span> ${fecha}`;
+
+    const horaCita = document.createElement('P');
+    horaCita.innerHTML = `<span>Hora:</span> ${hora}`;
+
+    resumen.appendChild(nombreCliente);
+    resumen.appendChild(fechaCita);
+    resumen.appendChild(horaCita);
 }
