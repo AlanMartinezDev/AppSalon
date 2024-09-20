@@ -13,6 +13,8 @@ class AdminController
             session_start();
         }
 
+        isAdmin();
+
         $fecha = $_GET['fecha'] ?? date('Y-m-d');
 
         // Comprueba si está vacío el parámetro fecha
