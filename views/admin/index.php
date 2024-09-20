@@ -19,7 +19,7 @@
         foreach ($citas as $cita) { ?>
             <?php if ($idCita !== $cita->id) { ?>
                 <li>
-                    <p>Cita: #<span><?php echo $cita->id; ?></span></p>
+                    <p>Cita: <span>#<?php echo $cita->id; ?></span></p>
                     <p>Hora: <span><?php echo $cita->hora; ?></span></p>
                     <p>Cliente: <span><?php echo $cita->cliente; ?></span></p>
                     <p>Email: <span><?php echo $cita->email; ?></span></p>
@@ -28,7 +28,6 @@
 
             <?php $idCita = $cita->id; } // Final de if ?>
                     <p class="servicio"><?php echo $cita->servicio . " " . $cita->precio . " €"; ?></p>
-                </li>
         <?php } // Final de foreach ?>
     </ul>
 </div>
