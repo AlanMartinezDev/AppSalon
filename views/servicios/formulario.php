@@ -5,5 +5,5 @@
 
 <div class="campo">
     <label for="precio">Precio</label>
-    <input type="number" name="precio" id="precio "value="<?php echo $servicio->precio; ?>" placeholder="Precio del servicio">
+    <input type="number" name="precio" id="precio" value="<?php echo $servicio->precio; ?>" placeholder="Precio del servicio">
 </div>
