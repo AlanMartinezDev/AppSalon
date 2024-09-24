@@ -75,5 +75,11 @@ class ServicioController
         ]);
     }
 
-    public static function eliminar(Router $router) {}
+    public static function eliminar()
+    {
+        $id = $_POST['id'];
+        $servicio = Servicio::find($id);
+        $servicio->eliminar($id);
+        header('Location: /servicios');
+    }
 }
