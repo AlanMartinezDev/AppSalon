@@ -104,12 +104,11 @@ function paginaSiguiente() {
 
 async function consultarAPI() {
     try {
-        const url = '/api/servicios';
-        const resultado = await fetch(url);
-        const servicios = await resultado.json();
-        mostrarServicios(servicios);
-    } catch (error) {
-        console.log(error);
+        const e = "/api/servicios"
+            , t = await fetch(e);
+        mostrarServicios(await t.json())
+    } catch (e) {
+        console.log(e)
     }
 }
 
